@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo List Simple</title>
+    <style>
+        /* Reset basique et fonte agréable */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background: #f0f2f5;
+            padding: 2rem;
+        }
+
+        .container {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        #taskInput {
+            width: calc(100% - 100px);
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+
+        #addTaskBtn {
+            width: 80px;
+            padding: 0.5rem;
+            border: none;
+            background: #28a745;
+            color: white;
+            font-weight: bold;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #addTaskBtn:hover {
+            background: #218838;
+        }
+
+        ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
+        li button {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        li button:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Ma Todo List</h1>
+        <div class="input-group">
+            <input id="taskInput" type="text" placeholder="Nouvelle tâche">
+            <button id="addTaskBtn">Ajouter</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        // On crée un tableau pour stocker les tâches
+        let tasks = [];
+
+        // On sélectionne les éléments du DOM dont on a besoin
+        const taskInput = document.getElementById("taskInput");
+        const addTaskBtn = document.getElementById("addTaskBtn");
+        const taskList = document.getElementById("taskList");
+
+        // On ajoute un écouteur d'événement sur le bouton "Ajouter"
+        addTaskBtn.addEventListener("click", () => {
+            // Récupère la valeur saisie et retire les espaces superflus
+            const newTask = taskInput.value.trim();
+
+            // Si la saisie n'est pas vide, on ajoute la tâche au tableau
+            if (newTask !== "") {
+                tasks.push(newTask);
+                // On vide le champ de saisie pour la prochaine tâche
+                taskInput.value = "";
+                // On met à jour l'affichage des tâches
+                renderTasks();
+            }
+        });
+
+        /**
+         * Fonction qui affiche la liste des tâches à l'écran
+         * Elle parcourt le tableau tasks et crée un <li> pour chaque élément
+         */
+        function renderTasks() {
+            // On vide d'abord la liste existante
+            taskList.innerHTML = "";
+
+            // Pour chaque tâche dans le tableau...
+            tasks.forEach((task, index) => {
+                // ...on crée un élément de liste
+                const li = document.createElement("li");
+                li.textContent = task;
+
+                // On crée un bouton "Supprimer" pour chaque tâche
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Supprimer";
+
+                // On ajoute un écouteur pour retirer la tâche du tableau
+                deleteBtn.addEventListener("click", () => {
+                    // splice retire 1 élément à la position index
+                    tasks.splice(index, 1);
+                    // puis on rafraîchit l'affichage
+                    renderTasks();
+                });
+
+                // On ajoute le bouton "Supprimer" dans l'<li>, puis l'<li> dans la liste
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+
+</html>
