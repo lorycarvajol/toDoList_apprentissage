@@ -1,5 +1,3 @@
----
-
 ## Todo List Simple
 
 Ce projet est une petite application JavaScript qui permet de gérer une liste de tâches. Elle illustre les concepts suivants :
